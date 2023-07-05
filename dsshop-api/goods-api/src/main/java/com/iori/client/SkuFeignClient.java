@@ -11,6 +11,5 @@ public interface SkuFeignClient {
 
     @GetMapping("/goods-sku/info/{skuId}")
      Map<String,Object> info(@PathVariable("skuId") String skuId);
-
-
+    System.out.println("你好git");
 }

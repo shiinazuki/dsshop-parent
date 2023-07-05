@@ -1,0 +1,68 @@
+server:
+  port: 7003
+spring:
+  zipkin:
+    base-url: http://127.0.0.1:9411/ #zipkin server的请求地址
+    sender:
+      type: web #请求方式,默认以http的方式向zk server发送追踪数据
+  sleuth:
+    sampler:
+      probability: 1.0 #采样的百分比
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      globalcors: #跨域配置
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedHeaders: "*"
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+
+      routes:
+        - id: pc-route #路由编号 用户自定义
+          #uri: http://127.0.0.1:5050
+          uri: lb://pc-server
+          predicates:
+            - Path=/api/pc/** #判断路径对不对
+            - After=2023-01-20T17:42:47.789-07:00[America/Denver] #在哪个时间点之后才可以访问
+            #            - Method=GET #请求方式是什么
+            #            - Method=Post #请求方式是什么
+            # - Query=op #必须跟的参数
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment} #地址替换
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@pathKeyResolver}' # 使用SpEL从容器中获取对象
+                #                key-resolver: '#{@userKeyResolver}' # 使用SpEL从容器中获取对象
+                redis-rate-limiter.replenishRate: 1 # 令牌桶每秒填充平均速率
+                redis-rate-limiter.burstCapacity: 3 # 令牌桶的总容量
+
+        - id: user-route #路由编号 用户自定义
+          uri: lb://user-server
+          predicates:
+            - Path=/api/tb-user-model/** #判断路径对不对
+            - After=2023-01-20T17:42:47.789-07:00[America/Denver] #在哪个时间点之后才可以访问
+            #            - Method=GET #请求方式是什么
+            #            - Method=Post #请求方式是什么
+            # - Query=op #必须跟的参数
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment} #地址替换
+
+
+  redis:
+    host: 192.168.71.129
+    port: 6379
+    password: 1234
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
+
+

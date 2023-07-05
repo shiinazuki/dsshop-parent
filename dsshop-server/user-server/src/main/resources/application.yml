@@ -1,0 +1,34 @@
+server:
+  port: ${server.port}
+spring:
+  zipkin:
+    base-url: http://127.0.0.1:9411/ #zipkin server的请求地址
+    sender:
+      type: web #请求方式,默认以http的方式向zk server发送追踪数据
+  sleuth:
+    sampler:
+      probability: 1.0 #采样的百分比
+  datasource:
+    url: ${spring.datasource.url}
+    driver-class-name: ${spring.datasource.driver-class-name}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    auto-mapping-behavior: FULL  #自动映射的配置 属性和数据库列相同不用配置result
+  global-config:      #逻辑删除的配置
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG

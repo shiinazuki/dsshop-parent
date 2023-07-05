@@ -1,0 +1,19 @@
+server:
+  port: 7310
+spring:
+  application:
+    name: item-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+feign:
+  httpclient:
+    connection-timeout: 10000
+  client:
+    config:
+      default: # 指定feignclients对应的名称 如果指定的是default 表示全局所有的client 的超时时间设置
+        connectTimeout: 10000
+        readTimeout: 10000
+pagePath: D:\soft\IDE\openresty-1.15.8.2-win64\openresty-1.15.8.2-win64\html

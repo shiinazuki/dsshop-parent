@@ -1,0 +1,27 @@
+server:
+  port: 7005
+spring:
+  application:
+    name: auth-server
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/shop_oauth
+    username: root
+    password: 1234
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        ip: 192.168.100.221
+auth:
+  ttl: 3600  #token存储到redis的过期时间
+  clientId: shop
+  clientSecret: shop
+encrypt:
+  key-store:
+    location: classpath:/myiori.jks
+    secret: myiori
+    alias: myiori
+    password: myiori

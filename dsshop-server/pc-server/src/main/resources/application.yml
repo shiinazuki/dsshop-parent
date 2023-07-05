@@ -1,0 +1,23 @@
+server:
+  port: ${server.port}
+spring:
+  zipkin:
+    base-url:  http://127.0.0.1:9411/ #zipkin server的请求地址
+    sender:
+      type: web #请求方式,默认以http的方式向zk server发送追踪数据
+  sleuth:
+    sampler:
+      probability: 1.0 #采样的百分比
+  application:
+    name: pc-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: canal-server
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 127.0.0.1:8848
+        group: dsshop
+        namespace: 6bb92c77-5aac-4732-997b-086290b5d1fd

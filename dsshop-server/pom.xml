@@ -17,6 +17,7 @@
         <module>canal-server</module>
         <module>search-server</module>
         <module>goods-server</module>
+        <module>order-server</module>
     </modules>
 
     <properties>

@@ -18,12 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @ClassName TbUserController
- * @Description 用户表控制器
- * @Author iori
- * @Date 2023/06/19 10:26
- **/
+
 @RestController
 @RequestMapping("/tb-user-model")
 @Api(value = "TbUserController", tags = {"用户表控制器"})

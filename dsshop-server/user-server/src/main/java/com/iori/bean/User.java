@@ -14,12 +14,9 @@ import java.util.Date;
  * @Date 2023/06/19 15:39
  **/
 @Data
-@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @TableName("tb_user")
-@ApiModel(value = "User", description = "用户表")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;

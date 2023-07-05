@@ -1,5 +1,7 @@
 package com.iori.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.iori.bean.Brand;
 import com.iori.bean.Category;
 import com.iori.bean.SkuModel;
@@ -12,12 +14,10 @@ import com.iori.service.BrandService;
 import com.iori.service.CategoryService;
 import com.iori.service.SkuModelService;
 import com.iori.service.SpuService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +36,12 @@ public class SkuController {
     private SpuService spuService;
 
 
+    /**
+     * 根据skuId查询商品对应的信息
+     *
+     * @param skuId
+     * @return
+     */
     @GetMapping("/info/{skuId}")
     public Map<String, Object> info(@PathVariable("skuId") String skuId) {
         Map<String, Object> result = new HashMap<>();
@@ -57,22 +63,44 @@ public class SkuController {
 
         Brand brand = brandService.getById(spu.getBrandId());
 
-        BeanUtils.copyProperties(sku,skuDto);
-        BeanUtils.copyProperties(spu,spuDto);
-        BeanUtils.copyProperties(c1,c1Dto);
-        BeanUtils.copyProperties(c2,c2Dto);
-        BeanUtils.copyProperties(c3,c3Dto);
-        BeanUtils.copyProperties(brand,brandDto);
+        BeanUtils.copyProperties(sku, skuDto);
+        BeanUtils.copyProperties(spu, spuDto);
+        BeanUtils.copyProperties(c1, c1Dto);
+        BeanUtils.copyProperties(c2, c2Dto);
+        BeanUtils.copyProperties(c3, c3Dto);
+        BeanUtils.copyProperties(brand, brandDto);
 
-        result.put("sku",skuDto);
-        result.put("spu",spuDto);
-        result.put("c1",c1Dto);
-        result.put("c2",c2Dto);
-        result.put("c3",c3Dto);
-        result.put("brand",brandDto);
+        result.put("sku", skuDto);
+        result.put("spu", spuDto);
+        result.put("c1", c1Dto);
+        result.put("c2", c2Dto);
+        result.put("c3", c3Dto);
+        result.put("brand", brandDto);
 
         return result;
 
+    }
+
+
+    /**
+     * 修改商品库存
+     *
+     * @param num
+     * @param id
+     * @return
+     */
+    @PutMapping("/updateNum")
+    public String updateNum(@RequestParam("num") Integer num,
+                            @RequestParam("id") String id) {
+
+        //先查出数据 拿到skuModel对象
+        SkuModel skuModel = skuModelService.getById(id);
+        //修改skuModel对象的num值
+        skuModel.setNum(skuModel.getNum() - num);
+        //根据id修改
+        skuModelService.updateById(skuModel);
+
+        return "success";
     }
 
 

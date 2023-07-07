@@ -431,6 +431,7 @@ public class SkuRepository {
                 "\t}\n" +
                 "}", XContentType.JSON);
 
+
         CreateIndexResponse response = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
         System.out.println(response.index());
     }

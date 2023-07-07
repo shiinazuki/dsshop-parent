@@ -28,6 +28,11 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>4.0.3</version><!--此版本与spring boot 1.5.6版本匹配-->
+        </dependency>
 
     </dependencies>
 

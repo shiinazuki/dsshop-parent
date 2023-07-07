@@ -1,7 +1,12 @@
 package com.iori.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.iori.service.PayService;
+import com.iori.util.MyConnectionFactory;
+import com.rabbitmq.client.BuiltinExchangeType;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +60,14 @@ public class PayController {
                 byteArrayOutputStream.write(buffer, 0, len);
             }
 
+            //接收返回的xml消息
             String content = new String(byteArrayOutputStream.toByteArray(), "UTF-8");
+            //将xml转为map集合
+            Map<String, String> map = WXPayUtil.xmlToMap(content);
+            //将map转为xml
+            String json = JSON.toJSONString(map);
+            //调用sendMQ方法 把数据传入
+            this.sendMQ(json);
 
             Map<String, String> result = new HashMap<>();
             result.put("return_code", "SUCCESS");
@@ -78,10 +91,39 @@ public class PayController {
     }
 
 
+    /**
+     * 查询地址 与选中商品信息
+     * @param orderId
+     * @return
+     */
     @GetMapping("/query")
     public Map<String, String> query(@RequestParam("orderId") String orderId) {
         return payService.query(orderId);
     }
 
+
+    /**
+     * 使用mq发送消息
+     * @param json
+     */
+    public void sendMQ(String json) {
+        //调用工厂类的连接方法 拿到连接
+        Connection connection = MyConnectionFactory.create();
+        try {
+            //创建与 Exchange的通道 每个连接可以创建多个通道 每个通道代表一个会话任务
+            Channel channel = connection.createChannel();
+            //声明交换机
+            channel.exchangeDeclare("myExchange", BuiltinExchangeType.DIRECT);
+            //声明队列
+            channel.queueDeclare("updateOrderQueue", true, false, false, null);
+            //绑定交换机和队列
+            channel.queueBind("updateOrderQueue","myExchange","updateOrder");
+            //调用basicPublish() 发送数据
+            channel.basicPublish("myExchange", "updateOrder", null, json.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

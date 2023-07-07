@@ -18,6 +18,7 @@
         <module>search-server</module>
         <module>goods-server</module>
         <module>order-server</module>
+        <module>pay-server</module>
     </modules>
 
     <properties>

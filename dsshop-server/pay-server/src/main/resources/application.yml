@@ -1,0 +1,15 @@
+server:
+  port: 7510
+spring:
+  application:
+    name: pay-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+weixin:
+  appid: wxab8acb865bb1637e
+  partner: 11473623
+  partnerkey: 2ab9071b06b9f739b950ddb41db2690d
+  notifyurl:  http://wvavnn.natappfree.cc/pay/notfly

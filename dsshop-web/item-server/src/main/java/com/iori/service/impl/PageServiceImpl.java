@@ -63,8 +63,8 @@ public class PageServiceImpl implements PageService {
         Map<String, Object> spuMap = ( Map<String, Object>)map.get("spu");
         Map<String, Object> specItems = JSON.parseObject(spuMap.get("specItems").toString(), Map.class);
 
+
         map.put("specItems",specItems);
-        //map.put("specItems",specItems);
 
         return map;
     }

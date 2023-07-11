@@ -15,7 +15,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         # ip: 192.168.100.221
-        ip: 192.168.10.50
+        #ip: 192.168.10.50
 auth:
   ttl: 3600  #token存储到redis的过期时间
   clientId: shop

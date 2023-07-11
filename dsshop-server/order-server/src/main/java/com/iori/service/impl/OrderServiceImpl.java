@@ -15,6 +15,10 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -36,6 +40,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private CartService cartService;
     @Autowired
     private SkuFeignClient skuFeignClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Transactional
     @Override
@@ -84,7 +90,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         cartService.remove(ids, username);
 
         //将订单编号放到消息队列
-        orderTime(order.getId());
+        //orderTime(order.getId());
+        rabbitTemplate.convertAndSend("placeOrderExchange", "info.one", order.getId(), new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                //设置超时时间
+                message.getMessageProperties().setExpiration("10000");
+                return message;
+            }
+        });
 
         return true;
     }

@@ -15,10 +15,10 @@ import java.util.Map;
 /**
  * 实现 CommandLineRunner接口里的run方法 使 SpringBoot程序启动时调用
  */
-@Component
+//@Component
 public class OrderListener implements CommandLineRunner {
 
-    @Autowired
+    //@Autowired
     private OrderService orderService;
 
     @Override

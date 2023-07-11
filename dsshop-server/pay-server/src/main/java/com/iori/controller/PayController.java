@@ -7,6 +7,7 @@ import com.iori.util.MyConnectionFactory;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,9 @@ public class PayController {
 
     @Autowired
     private PayService payService;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
 
     @GetMapping("/hello")
     public String hello(String name) {
@@ -67,7 +71,8 @@ public class PayController {
             //将map转为xml
             String json = JSON.toJSONString(map);
             //调用sendMQ方法 把数据传入
-            this.sendMQ(json);
+            //this.sendMQ(json);
+            rabbitTemplate.convertAndSend("myExchange","info.order",json);
 
             Map<String, String> result = new HashMap<>();
             result.put("return_code", "SUCCESS");

@@ -15,6 +15,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -22,7 +23,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.IOException;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Transactional
+    @GlobalTransactional  //加上这个注解就行了
     @Override
     public boolean create(OrderVo orderVo, String username) {
 
@@ -91,11 +92,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         //将订单编号放到消息队列
         //orderTime(order.getId());
-        rabbitTemplate.convertAndSend("placeOrderExchange", "info.one", order.getId(), new MessagePostProcessor() {
+        rabbitTemplate.convertAndSend("placeOrderExchange", "info.one", order.getId(),
+                new MessagePostProcessor() {
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
-                //设置超时时间
-                message.getMessageProperties().setExpiration("10000");
+                //设置超时时间和字符集
+                message.getMessageProperties().setExpiration("1000000");
+                message.getMessageProperties().setContentEncoding("UTF-8");
                 return message;
             }
         });

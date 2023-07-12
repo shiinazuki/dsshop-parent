@@ -7,6 +7,8 @@ import com.iori.util.MyConnectionFactory;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,6 +74,12 @@ public class PayController {
             String json = JSON.toJSONString(map);
             //调用sendMQ方法 把数据传入
             //this.sendMQ(json);
+
+            //设置confirm
+            rabbitTemplate.setConfirmCallback(confirmCallback);
+            //设置return机制
+            rabbitTemplate.setReturnCallback(returnCallback);
+
             rabbitTemplate.convertAndSend("myExchange","info.order",json);
 
             Map<String, String> result = new HashMap<>();
@@ -105,6 +113,44 @@ public class PayController {
     public Map<String, String> query(@RequestParam("orderId") String orderId) {
         return payService.query(orderId);
     }
+
+
+
+
+
+    /**
+     * return 机制 没找到交换机或路由 就走这里
+     */
+    public RabbitTemplate.ReturnCallback returnCallback = new RabbitTemplate.ReturnCallback() {
+        @Override
+        public void returnedMessage(Message message, int replyCode, String replyText,
+                                    String exchange, String routingKey) {
+
+            System.out.println("message" + message);
+            System.out.println("exchange" + exchange);
+            System.out.println("replyCode" + replyCode);
+            System.out.println("replyText" + replyText);
+            System.out.println("routingKey" + routingKey);
+
+        }
+    };
+
+
+    /**
+     * confirm确认
+     */
+    public RabbitTemplate.ConfirmCallback confirmCallback = new RabbitTemplate.ConfirmCallback() {
+        @Override
+        public void confirm(CorrelationData correlationData, boolean ack, String s) {
+            if (ack) {
+                System.out.println("已接收");
+            }else {
+                System.out.println("程序执行失败");
+            }
+        }
+    };
+
+
 
 
     /**

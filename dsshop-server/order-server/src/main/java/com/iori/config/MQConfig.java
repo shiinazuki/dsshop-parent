@@ -60,7 +60,7 @@ public class MQConfig {
      * @return
      */
     @Bean(ONE_EXCHANGE)
-    public Exchange oneOederExchange() {
+    public Exchange placeOrderExchange() {
         return ExchangeBuilder.topicExchange(ONE_EXCHANGE).durable(true).build();
     }
 
@@ -69,7 +69,7 @@ public class MQConfig {
      * @return
      */
     @Bean(ONE_QUEUE)
-    public Queue oneOrderQueue() {
+    public Queue placeOrderQueue() {
         //加入死信 消息到时转到哪里
         Map<String,Object> map = new HashMap<>();
         map.put("x-dead-letter-exchange",TWO_EXCHANGE);
@@ -82,7 +82,7 @@ public class MQConfig {
      * @return
      */
     @Bean
-    public Binding bindingOneOrderQueueToOneExchange(@Qualifier(ONE_EXCHANGE) Exchange exchange,
+    public Binding bindingPlaceQueueToPlaceExchange(@Qualifier(ONE_EXCHANGE) Exchange exchange,
                                             @Qualifier(ONE_QUEUE) Queue queue) {
 
         return BindingBuilder.bind(queue).to(exchange).with("info.one").noargs();
@@ -97,7 +97,7 @@ public class MQConfig {
      * @return
      */
     @Bean(TWO_EXCHANGE)
-    public Exchange twoOederExchange() {
+    public Exchange failOrderExchange() {
         return ExchangeBuilder.topicExchange(TWO_EXCHANGE).durable(true).build();
     }
 
@@ -106,7 +106,7 @@ public class MQConfig {
      * @return
      */
     @Bean(TWO_QUEUE)
-    public Queue twoOrderQueue() {
+    public Queue failOrderQueue() {
         return new Queue(TWO_QUEUE,true,false,false,null);
     }
 
@@ -115,7 +115,7 @@ public class MQConfig {
      * @return
      */
     @Bean
-    public Binding bindingTwoOrderQueueToTwoExchange(@Qualifier(TWO_EXCHANGE) Exchange exchange,
+    public Binding bindingFailExchangeToFailExchange(@Qualifier(TWO_EXCHANGE) Exchange exchange,
                                                      @Qualifier(TWO_QUEUE) Queue queue) {
 
         return BindingBuilder.bind(queue).to(exchange).with(TWO_ROUTING).noargs();

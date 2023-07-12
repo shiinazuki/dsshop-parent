@@ -93,6 +93,8 @@ public class SkuController {
     public String updateNum(@RequestParam("num") Integer num,
                             @RequestParam("id") String id) {
 
+        //制造异常
+        //int a = 10 / 0;
         //先查出数据 拿到skuModel对象
         SkuModel skuModel = skuModelService.getById(id);
         //修改skuModel对象的num值

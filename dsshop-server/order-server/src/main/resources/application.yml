@@ -28,3 +28,27 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+
+seata:
+  application-id: order
+  enabled: true
+  tx-service-group: order #和上面的nacos的上面的配置一致
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace: a25b7948-5a66-4e7a-9bf6-db6e32f92086 #配置上面的namespace
+      serverAddr: http://127.0.0.1:8848 #nacos地址
+      group: SEATA_GROUP
+      userName: nacos
+      password: nacos
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      serverAddr: http://127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: a25b7948-5a66-4e7a-9bf6-db6e32f92086
+      userName: nacos
+      password: nacos
+      cluster: default

@@ -24,6 +24,7 @@ public class MQConfig {
 
     /**
      * 创建交换机
+     *
      * @return
      */
     @Bean(ORDER_EXCHANGE)
@@ -33,20 +34,22 @@ public class MQConfig {
 
     /**
      * 创建队列
+     *
      * @return
      */
     @Bean(ORDER_QUEUE)
     public Queue createOrderQueue() {
-        return new Queue(ORDER_QUEUE,true,false,false,null);
+        return new Queue(ORDER_QUEUE, true, false, false, null);
     }
 
     /**
      * 交换机与队列绑定
+     *
      * @return
      */
     @Bean
     public Binding bindingOrderQueueToExchange(@Qualifier(ORDER_EXCHANGE) Exchange exchange,
-                                            @Qualifier(ORDER_QUEUE) Queue queue) {
+                                               @Qualifier(ORDER_QUEUE) Queue queue) {
 
         return BindingBuilder.bind(queue).to(exchange).with("info.order").noargs();
 
@@ -57,6 +60,7 @@ public class MQConfig {
 
     /**
      * 创建交换机
+     *
      * @return
      */
     @Bean(ONE_EXCHANGE)
@@ -66,24 +70,26 @@ public class MQConfig {
 
     /**
      * 创建队列
+     *
      * @return
      */
     @Bean(ONE_QUEUE)
     public Queue placeOrderQueue() {
         //加入死信 消息到时转到哪里
-        Map<String,Object> map = new HashMap<>();
-        map.put("x-dead-letter-exchange",TWO_EXCHANGE);
-        map.put("x-dead-letter-routing-key",TWO_ROUTING);
-        return new Queue(ONE_QUEUE,true,false,false,map);
+        Map<String, Object> map = new HashMap<>();
+        map.put("x-dead-letter-exchange", TWO_EXCHANGE);
+        map.put("x-dead-letter-routing-key", TWO_ROUTING);
+        return new Queue(ONE_QUEUE, true, false, false, map);
     }
 
     /**
      * 交换机与队列绑定
+     *
      * @return
      */
     @Bean
     public Binding bindingPlaceQueueToPlaceExchange(@Qualifier(ONE_EXCHANGE) Exchange exchange,
-                                            @Qualifier(ONE_QUEUE) Queue queue) {
+                                                    @Qualifier(ONE_QUEUE) Queue queue) {
 
         return BindingBuilder.bind(queue).to(exchange).with("info.one").noargs();
 
@@ -94,6 +100,7 @@ public class MQConfig {
 
     /**
      * 创建交换机
+     *
      * @return
      */
     @Bean(TWO_EXCHANGE)
@@ -103,15 +110,17 @@ public class MQConfig {
 
     /**
      * 创建队列
+     *
      * @return
      */
     @Bean(TWO_QUEUE)
     public Queue failOrderQueue() {
-        return new Queue(TWO_QUEUE,true,false,false,null);
+        return new Queue(TWO_QUEUE, true, false, false, null);
     }
 
     /**
      * 交换机与队列绑定
+     *
      * @return
      */
     @Bean
@@ -123,6 +132,84 @@ public class MQConfig {
     }
 
 
+    /*******************************************************************************/
+
+    public static final String addCourseExchange = "addCourseExchange";
+    public static final String addCourseQueue = "addCourseQueue";
+    public static final String addCourseRouting = "addCourseRouting";
+
+
+    /**
+     * 创建交换机
+     *
+     * @return
+     */
+    @Bean(addCourseExchange)
+    public Exchange addCourseExchange() {
+        return ExchangeBuilder.topicExchange(addCourseExchange).durable(true).build();
+    }
+
+    /**
+     * 创建队列
+     *
+     * @return
+     */
+    @Bean(addCourseQueue)
+    public Queue addCourseQueue() {
+        return new Queue(addCourseQueue, true, false, false, null);
+    }
+
+    /**
+     * 交换机与队列绑定
+     *
+     * @return
+     */
+    @Bean
+    public Binding bindingCourseQueueToCourseExchange(@Qualifier(addCourseExchange) Exchange exchange,
+                                                      @Qualifier(addCourseQueue) Queue queue) {
+
+        return BindingBuilder.bind(queue).to(exchange).with(addCourseRouting).noargs();
+
+    }
+
+    /************************************************************/
+    public static final String addSuccessExchange = "addSuccessExchange";
+    public static final String addSuccessQueue = "addSuccessQueue";
+    public static final String addSuccessRouting = "addSuccessRouting";
+
+
+    /**
+     * 创建交换机
+     *
+     * @return
+     */
+    @Bean(addSuccessExchange)
+    public Exchange addSuccessExchange() {
+        return ExchangeBuilder.topicExchange(addSuccessExchange).durable(true).build();
+    }
+
+    /**
+     * 创建队列
+     *
+     * @return
+     */
+    @Bean(addSuccessQueue)
+    public Queue addSuccessQueue() {
+        return new Queue(addSuccessQueue, true, false, false, null);
+    }
+
+    /**
+     * 交换机与队列绑定
+     *
+     * @return
+     */
+    @Bean
+    public Binding bindingSuccessQueueToCourseExchange(@Qualifier(addSuccessExchange) Exchange exchange,
+                                                       @Qualifier(addSuccessQueue) Queue queue) {
+
+        return BindingBuilder.bind(queue).to(exchange).with(addSuccessRouting).noargs();
+
+    }
 
 
 }

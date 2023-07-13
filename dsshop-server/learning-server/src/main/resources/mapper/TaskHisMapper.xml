@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iori.mapper.TaskHisMapper">
+
+		<!-- 通用查询映射结果 -->
+		<resultMap id="BaseResultMap" type="com.iori.bean.TaskHis">
+					<id column="id" property="id"/>
+					<result column="create_time" property="createTime"/>
+					<result column="update_time" property="updateTime"/>
+					<result column="delete_time" property="deleteTime"/>
+					<result column="task_type" property="taskType"/>
+					<result column="mq_exchange" property="mqExchange"/>
+					<result column="mq_routingkey" property="mqRoutingkey"/>
+					<result column="request_body" property="requestBody"/>
+					<result column="version" property="version"/>
+					<result column="status" property="status"/>
+					<result column="errormsg" property="errormsg"/>
+		</resultMap>
+
+		<!-- 通用查询结果列 -->
+		<sql id="Base_Column_List">
+            id, create_time, update_time, delete_time, task_type, mq_exchange, mq_routingkey, request_body, version, status, errormsg
+		</sql>
+
+</mapper>

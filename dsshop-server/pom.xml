@@ -19,6 +19,7 @@
         <module>goods-server</module>
         <module>order-server</module>
         <module>pay-server</module>
+        <module>learning-server</module>
     </modules>
 
     <properties>

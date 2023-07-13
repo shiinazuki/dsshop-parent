@@ -97,7 +97,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
                 //设置超时时间和字符集
-                message.getMessageProperties().setExpiration("1000000");
+                String timeOut = 5 * 60 * 1000 + "";
+                message.getMessageProperties().setExpiration(timeOut);
                 message.getMessageProperties().setContentEncoding("UTF-8");
                 return message;
             }

@@ -4,5 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.iori.mapper.TaskMapper">
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.iori.bean.Task">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="delete_time" property="deleteTime"/>
+        <result column="task_type" property="taskType"/>
+        <result column="mq_exchange" property="mqExchange"/>
+        <result column="mq_routingkey" property="mqRoutingkey"/>
+        <result column="request_body" property="requestBody"/>
+        <result column="status" property="status"/>
+        <result column="errormsg" property="errormsg"/>
+        <result column="version" property="version"/>
+    </resultMap>
+
+    <select id="queryBeforeOneMinute" resultType="java.lang.Long">
+        select id from tb_task where timestampdiff(MINUTE,update_time,NOW()) > 1
+    </select>
+
+    <update id="updateLock" >
+        update tb_task set version = version + 1 where id = #{taskId} and version = #{version}
+    </update>
 
 </mapper>

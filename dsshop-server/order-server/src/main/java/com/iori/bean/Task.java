@@ -10,13 +10,12 @@ import java.util.Date;
 @TableName("tb_task")
 public class Task implements Serializable {
 
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private Long id;
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.DEFAULT)
     private Date deleteTime;
     private String taskType;
     private String mqExchange;
@@ -25,8 +24,6 @@ public class Task implements Serializable {
     private String status;
     private String errormsg;
     private Integer version;
-
-
 
 
 }

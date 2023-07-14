@@ -20,6 +20,7 @@
         <module>order-server</module>
         <module>pay-server</module>
         <module>learning-server</module>
+        <module>seckill-server</module>
     </modules>
 
     <properties>

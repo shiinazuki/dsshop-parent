@@ -17,6 +17,20 @@ spring:
     host: 192.168.71.129
     port: 6379
     password: 1234
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+redisson:
+  addr:
+    singleAddr:
+      host: redis://192.168.71.129:6379
+      password: 1234
+      database: 0
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:

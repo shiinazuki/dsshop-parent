@@ -1,7 +1,6 @@
 package com.iori.job;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.iori.bean.SecKillGoods;
 import com.iori.service.SecKillGoodsService;
 import com.iori.util.DateUtil;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +25,7 @@ public class SecKillTask {
     /**
      * 定时任务
      */
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "0/20 * * * * *")
     public void run() {
 
         //获取当前时间段
@@ -55,11 +53,32 @@ public class SecKillTask {
                 System.out.println(secKillGoods);
                 //将数据加入到redis中
                 redisTemplate.boundHashOps("seckill:" + extTime).put(secKillGoods.getId().toString(), secKillGoods);
+                //取出库存
+                int num = secKillGoods.getStockCount();
+                Long id = secKillGoods.getId();
+                //Long类型数组 用来存放商品数量
+                Long[] ids = this.ids(num, id);
+                //商品数量的队列
+                redisTemplate.boundListOps("secKillNumQueue:" + id).leftPushAll(ids);
             }
 
 
         }
 
+    }
+
+    /**
+     * 存放商品数量的方法
+     * @param len
+     * @param id
+     * @return
+     */
+    public Long[] ids(Integer len, Long id) {
+        Long[] ids = new Long[len];
+        for (Integer i = 0; i < len; i++) {
+            ids[i] = id;
+        }
+        return ids;
     }
 
 }

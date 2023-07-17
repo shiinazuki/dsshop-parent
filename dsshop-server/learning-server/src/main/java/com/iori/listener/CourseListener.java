@@ -1,7 +1,6 @@
 package com.iori.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.iori.bean.LearningCourse;
 import com.iori.bean.TaskHis;

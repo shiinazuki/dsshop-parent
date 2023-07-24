@@ -93,18 +93,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //将订单编号放到消息队列
         //orderTime(order.getId());
         rabbitTemplate.convertAndSend("placeOrderExchange", "info.one", order.getId(),
-                new MessagePostProcessor() {
-            @Override
-            public Message postProcessMessage(Message message) throws AmqpException {
-                //设置超时时间和字符集
-                String timeOut = 5 * 60 * 1000 + "";
-                message.getMessageProperties().setExpiration(timeOut);
-                message.getMessageProperties().setContentEncoding("UTF-8");
-                return message;
-            }
-        });
+                message -> {
+                    //设置超时时间和字符集
+                    String timeOut = 5 * 60 * 1000 + "";
+                    message.getMessageProperties().setExpiration(timeOut);
+                    message.getMessageProperties().setContentEncoding("UTF-8");
+                    return message;
+                });
 
         return true;
+
     }
 
 

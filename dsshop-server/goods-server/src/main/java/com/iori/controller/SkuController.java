@@ -1,7 +1,5 @@
 package com.iori.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.iori.bean.Brand;
 import com.iori.bean.Category;
 import com.iori.bean.SkuModel;
@@ -14,7 +12,6 @@ import com.iori.service.BrandService;
 import com.iori.service.CategoryService;
 import com.iori.service.SkuModelService;
 import com.iori.service.SpuService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

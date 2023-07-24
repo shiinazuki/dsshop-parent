@@ -14,7 +14,7 @@ public class MQConfig {
     public static final String ORDER_EXCHANGE = "myExchange";
     public static final String ORDER_QUEUE = "updateOrderQueue";
 
-    public static final String ONE_EXCHANGE = "placeOrderExchange";
+    public static final String ONE_EXCHANGE = "placeOrderExchangeplaceOrderExchange";
     public static final String ONE_QUEUE = "placeOrderQueue";
 
     public static final String TWO_EXCHANGE = "failOrderExchange";

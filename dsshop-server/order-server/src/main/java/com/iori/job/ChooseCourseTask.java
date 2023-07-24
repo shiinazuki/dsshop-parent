@@ -25,7 +25,7 @@ public class ChooseCourseTask {
     /**
      * 定时任务代码 每10秒执行一次 可自行设置
      */
-    @Scheduled(cron = "0/30 * * * * *") //每隔3秒执行一次
+    @Scheduled(cron = "0/30 * * * * *")
     public void testTask() {
 
         System.out.println("执行定时任务");

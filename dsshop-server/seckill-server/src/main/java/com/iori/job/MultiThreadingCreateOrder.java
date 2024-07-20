@@ -85,7 +85,7 @@ public class MultiThreadingCreateOrder {
         userStatus.setStatus(2);
         //存放到redis中 键为username 值为订单对象
         redisTemplate.boundHashOps("seckillOrder").put(username, secKillOrder);
-        //修改订单状态
+        //修改用户订单状态
         redisTemplate.boundHashOps("userSecKillStatus").put(username, userStatus);
 
         //让库存减1
@@ -105,13 +105,10 @@ public class MultiThreadingCreateOrder {
         }
 
         //把订单发送到消息队列
-        rabbitTemplate.convertAndSend(MQConfig.ONE_EXCHANGE, MQConfig.ONE_ROUTING, JSON.toJSONString(userStatus), new MessagePostProcessor() {
-            @Override
-            public Message postProcessMessage(Message message) throws AmqpException {
-                message.getMessageProperties().setContentEncoding("UTF-8");
-                message.getMessageProperties().setExpiration("15000");
-                return message;
-            }
+        rabbitTemplate.convertAndSend(MQConfig.ONE_EXCHANGE, MQConfig.ONE_ROUTING, JSON.toJSONString(userStatus), message -> {
+            message.getMessageProperties().setContentEncoding("UTF-8");
+            message.getMessageProperties().setExpiration("15000");
+            return message;
         });
 
         //释放锁

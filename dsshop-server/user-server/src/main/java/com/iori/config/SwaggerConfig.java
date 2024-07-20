@@ -10,12 +10,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-/**
- * @ClassName SwaggerConfig
- * @Description
- * @Author yso
- * @Date 2021/8/3 16:11
- **/
+
 @Configuration
 public class SwaggerConfig {
 

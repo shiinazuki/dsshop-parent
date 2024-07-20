@@ -66,6 +66,7 @@ public class SecKillGoodsServiceImpl extends ServiceImpl<SecKillGoodsMapper, Sec
         //将传传来的数据封装成对象
         SecKillStatus secKillStatus = new SecKillStatus(username,new Date(),1,Long.parseLong(id),time);
         //使用 List类型 调用 leftPush进行存储用户信息队列 保证用户的公平性
+        //因为队列是先进先出 把进来的用户放入到队列中 保证公平
         redisTemplate.boundListOps("userSecKillQueue").leftPush(secKillStatus);
 
         //使用 hash 类型 将用户状态存储到redis中 key为 username value 为  用户信息对象

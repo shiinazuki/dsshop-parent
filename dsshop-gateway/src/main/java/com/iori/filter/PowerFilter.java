@@ -1,6 +1,5 @@
 package com.iori.filter;
 
-import com.iori.utils.JwtUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;

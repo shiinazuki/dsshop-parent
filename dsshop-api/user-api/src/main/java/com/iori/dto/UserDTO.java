@@ -7,12 +7,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @ClassName TbUserModel
- * @Description 用户表模型对象
- * @Author zj
- * @Date 2023/06/19 10:26
- **/
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor

@@ -31,7 +31,7 @@ public class SecKillTask {
         //获取当前时间段
         List<Date> dateList = DateUtil.getDateMenus();
         for (Date date : dateList) {
-            System.out.println(date);
+            //System.out.println(date);
             //设置redis的key
             String extTime = DateUtil.data2str(date, DateUtil.PATTERN_YYYYMMDDHH);
 
@@ -50,7 +50,7 @@ public class SecKillTask {
             //开始查询 返回集合
             List<SecKillGoods> list = secKillGoodsService.list(queryWrapper);
             for (SecKillGoods secKillGoods : list) {
-                System.out.println(secKillGoods);
+                //System.out.println(secKillGoods);
                 //将数据加入到redis中
                 redisTemplate.boundHashOps("seckill:" + extTime).put(secKillGoods.getId().toString(), secKillGoods);
                 //取出库存

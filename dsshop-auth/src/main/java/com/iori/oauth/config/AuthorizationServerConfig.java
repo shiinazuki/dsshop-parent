@@ -27,7 +27,7 @@ import java.security.KeyPair;
 
 @Configuration
 @EnableAuthorizationServer
-class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     //数据源，用于从数据库获取数据进行认证操作，测试可以从内存中获取
     @Autowired
     private DataSource dataSource;

@@ -9,12 +9,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-/**
- * @ClassName TbAddressModel
- * @Description 模型对象
- * @Author zj
- * @Date 2023/07/05 16:33
- **/
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

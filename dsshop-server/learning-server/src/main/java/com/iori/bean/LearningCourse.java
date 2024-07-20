@@ -11,12 +11,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * @ClassName LearningCourse
- * @Description 模型对象
- * @Author iori
- * @Date 2023/07/13 15:15
- **/
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor

@@ -7,12 +7,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-/**
- * @ClassName TbBrandModel
- * @Description 品牌表模型对象
- * @Author zj
- * @Date 2023/07/04 09:48
- **/
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor

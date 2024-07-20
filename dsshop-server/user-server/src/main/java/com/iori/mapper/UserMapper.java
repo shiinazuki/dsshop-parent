@@ -8,12 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * @ClassName TbUserMapper
- * @Description 用户表mapper接口
- * @Author zj
- * @Date 2023/06/19 10:26
- **/
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 

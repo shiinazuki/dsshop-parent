@@ -10,12 +10,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @ClassName TaskHis
- * @Description 模型对象
- * @Author iori
- * @Date 2023/07/13 15:19
- **/
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
